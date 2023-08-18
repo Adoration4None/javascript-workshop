@@ -47,27 +47,48 @@
       <section class="container">
         <div class="row py-4">
           <div class="card col-lg-7">
-            <form id="formulario-calculadora">
+            <form id="calculator-form">
               <fieldset>
                 <legend class="h2 text-center">Calculadora de Calorías</legend>
                 <div class="mb-3">
-                  <label for="edad" class="form-label h6">Edad</label>
-                  <input type="number" id="edad" class="form-control" min="15" max="80" placeholder="Digíte su edad">
+                  <label for="name" class="form-label h6">Nombre</label>
+                  <input type="text" id="name" class="form-control" placeholder="Digíte su nombre completo">
                 </div>
 
                 <div class="mb-3">
-                  <label for="peso" class="form-label h6">Peso</label>
-                  <input type="number" id="peso" class="form-control" placeholder="Digíte su peso en kilogramos">
+                  <label for="document-type" class="form-label h6">Tipo de documento</label>
+                  <select id="document-type" class="form-select">
+                    <option></option>
+                    <option value="0">Cédula de ciudadanía</option>
+                    <option value="1">Cédula de extranjería</option>
+                    <option value="2">Tarjeta de identidad</option>
+                    <option value="3">Pasaporte</option>
+                  </select>
                 </div>
 
                 <div class="mb-3">
-                  <label for="altura" class="form-label h6">Altura</label>
-                  <input type="number" id="altura" class="form-control" placeholder="Digíte su altura en centímetros">
+                  <label for="document-num" class="form-label h6">Número de documento</label>
+                  <input type="text" id="document-num" class="form-control" placeholder="Digite su número de documento">
                 </div>
 
                 <div class="mb-3">
-                  <label for="actividad" class="form-label h6">Actividad física</label>
-                  <select id="actividad" class="form-select">
+                  <label for="age" class="form-label h6">Edad</label>
+                  <input type="number" id="age" class="form-control" min="15" max="80" placeholder="Digíte su edad">
+                </div>
+
+                <div class="mb-3">
+                  <label for="weight" class="form-label h6">Peso</label>
+                  <input type="number" id="weight" class="form-control" placeholder="Digíte su peso en kilogramos">
+                </div>
+
+                <div class="mb-3">
+                  <label for="height" class="form-label h6">Altura</label>
+                  <input type="number" id="height" class="form-control" placeholder="Digíte su altura en centímetros">
+                </div>
+
+                <div class="mb-3">
+                  <label for="activity" class="form-label h6">Actividad física</label>
+                  <select id="activity" class="form-select">
                     <option></option>
                     <option value="1.2">Poco o ningún ejercicio</option>
                     <option value="1.375">Ejercicio ligero (1-3 días a la semana)</option>
@@ -80,15 +101,15 @@
                 <section class="row m-2 h-100">
                   <span class="h6 p-0">Sexo</span>
                   <div class="form-check">
-                    <input class="form-check-input" value="F" type="radio" name="genero" id="femenino" checked>
-                    <label class="form-check-label" for="femenino">
+                    <input class="form-check-input" value="F" type="radio" name="gender" id="female" checked>
+                    <label class="form-check-label" for="female">
                       Femenino
                     </label>
                   </div>
 
                   <div class="form-check">
-                    <input class="form-check-input" value="M" type="radio" name="genero" id="masculino">
-                    <label class="form-check-label" for="masculino">
+                    <input class="form-check-input" value="M" type="radio" name="gender" id="male">
+                    <label class="form-check-label" for="male">
                       Masculino
                     </label>
                   </div>
@@ -101,7 +122,7 @@
             </form>
           </div>
 
-          <article class="card col" id="resultado">
+          <article class="card col" id="result">
             
           </article>
         </div>

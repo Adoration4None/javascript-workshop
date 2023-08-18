@@ -1,9 +1,18 @@
+const form   = document.getElementById('calculator-form');
+const result = document.getElementById('result');
 
-function calcularCalorias() {
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    calculateCalories();
+})
 
+function calculateCalories() {
+    showResult();
+
+    
 }
 
-function mostrarMensajeDeError(msg) {
+function showError(msg) {
     const calculo = document.querySelector('#calculo');
     if (calculo) {
         calculo.remove();
@@ -13,41 +22,41 @@ function mostrarMensajeDeError(msg) {
     divError.className = 'd-flex justify-content-center align-items-center h-100';
     divError.innerHTML = `<span class="alert alert-danger text-center">${msg}</span>`;
 
-    resultado.appendChild(divError);
+    result.appendChild(divError);
 
     setTimeout(() => {
         divError.remove();
-        desvanecerResultado();
+        fadeResult();
     }, 5000);
 }
 
 
 // Animaciones
-function aparecerResultado() {
-    resultado.style.top = '100vh';
-    resultado.style.display = 'block';
+function showResult() {
+    result.style.top = '100vh';
+    result.style.display = 'block';
     
-    let distancia = 100;
-    let resta = 0.3;
+    let distance = 100;
+    let subs = 0.3;
     let id = setInterval(() => {
-        resta *= 1.1;
-        resultado.style.top = `${distancia - resta}vh`;
-        if (resta > 100) {
+        subs *= 1.1;
+        result.style.top = `${distance - subs}vh`;
+        if (subs > 100) {
             clearInterval(id);
         }
     }, 10)
 }
 
-function desvanecerResultado() {
-    let distancia = 1;
+function fadeResult() {
+    let distance = 1;
 
     let id = setInterval(() => {
-        distancia *= 2;
-        resultado.style.top = `${distancia}vh`;
-        if (distancia > 100) {
+        distance *= 2;
+        result.style.top = `${distance}vh`;
+        if (distance > 100) {
             clearInterval(id);
-            resultado.style.display = 'none';
-            resultado.style.top = 0;
+            result.style.display = 'none';
+            result.style.top = 0;
         }
     }, 10)
 }
