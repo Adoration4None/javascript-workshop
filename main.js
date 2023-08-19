@@ -9,7 +9,77 @@ form.addEventListener('submit', (event) => {
 function calculateCalories() {
     showResult();
 
-    
+    // Inputs
+    const name           = document.querySelector('#name');
+    let documentType     = document.querySelector('#document-type');
+    const documentNumber = document.querySelector('#document-num'); 
+    const age            = document.querySelector('#age');
+    const weight         = document.querySelector('#weight');
+    const height         = document.querySelector('#height');
+    const activity       = document.querySelector('#activity');
+    const gender         = document.querySelector('input[name="gender"]:checked');
+
+    if( !allFieldsFilled( [name, documentType, documentNumber, age, weight, height, activity, gender] ) ) {
+        showError('Por favor, asegúrese de llenar todos los campos');
+        return null;
+    } 
+
+    // Constant values needed to do the math
+    const bmr = {
+        age: 5,
+        weight: 10,
+        height: 6.25,
+        gender: gender.value === 'M' ? 5 : -161
+    }
+
+    // Output
+    const calories = activity.value * ((bmr.weight * weight.value) + (bmr.height * height.value) - (bmr.age * age.value) + bmr.gender);
+
+    documentType = convertDocumentType(documentType.value);
+
+    result.innerHTML = `
+        <div class="card-body d-flex flex-column justify-content-center align-items-center h-100">
+            <h5 class="card-title h2">Calorías requeridas</h5>
+            <div>
+                <input class="form-control text-center" value="${Math.round(calories)} kcal" style="font-size: 2rem" disabled />
+            </div>
+        </div>
+    `
+    console.log(`El paciente ${name.value} identificado con ${documentType}
+    NO. ${documentNumber.value}, requiere un total de ${calories} kcal
+    para el sostenimiento de su TBM`);
+
+    name.value           = null;
+    documentType.value   = null;
+    documentNumber.value = null;
+    age.value            = null;
+    weight.value         = null;
+    height.value         = null;
+    activity.value       = null;
+    gender.value         = null;
+
+    return calories;
+}
+
+function allFieldsFilled(fields) {
+    for( let field of fields ) {
+        if( field.value == null || field.value == undefined || field.value == '' ) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function convertDocumentType(option) {
+    const type = {
+        '0': 'Cédula de ciudadanía',
+        '1': 'Cédula de extranjería',
+        '2': 'Tarjeta de identidad',
+        '3': 'Pasaporte'
+    };
+
+    return type[option];
 }
 
 function showError(msg) {
