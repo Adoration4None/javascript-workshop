@@ -25,7 +25,7 @@ function calculateCalories() {
             weight,
             height,
             activity,
-            gender,
+            gender
         ])
     ) {
         showError("Por favor, asegúrese de llenar todos los campos");
