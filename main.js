@@ -6,20 +6,6 @@ form.addEventListener("submit", (event) => {
     calculateCalories();
 });
 
-function verifyAge(age) {
-    if (age.value >= 15 && !Number.isNaN(age)) {
-        if (age.value >= 15 && age.value <= 29) {
-            return "El paciente pertenece al grupo poblacional juvenil.";
-        } else if (age.value >= 30 && age.value <= 59) {
-            return "El paciente pertenece al grupo poblacional adulto.";
-        } else {
-            return "El paciente pertenece al grupo poblacional de adultos mayores.";
-        }
-    } else {
-        showError("La edad ingresada no es permitida");
-    }
-}
-
 function calculateCalories() {
     // Inputs
     const name = document.querySelector("#name");
@@ -47,6 +33,8 @@ function calculateCalories() {
         return null;
     }
 
+    regexValidations(name, documentNumber);
+
     // Constant values needed to do the math
     const bmr = {
         age: 5,
@@ -55,7 +43,7 @@ function calculateCalories() {
         gender: gender.value === "M" ? 5 : -161,
     };
 
-    let myMessage = verifyAge(age);
+    let ageMessage = verifyAge(age);
 
     // Output
     const calories =
@@ -67,10 +55,10 @@ function calculateCalories() {
 
     documentType = convertDocumentType(documentType.value);
 
-    showResult(name, documentType, documentNumber, calories, myMessage);
+    showResult(name, documentType, documentNumber, calories, ageMessage);
 
     name.value = null;
-    documentType.value = null;
+    documentType = null;
     documentNumber.value = null;
     age.value = null;
     weight.value = null;
@@ -93,6 +81,29 @@ function allFieldsFilled(fields) {
     }
 
     return true;
+}
+
+function regexValidations(name, documentNumber) {
+    if (!/\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/gim.test(name.value)) {
+        showError("El campo Nombre solo debe tener letras");
+        return null;
+    }
+
+    if (!/^[0-9]{8,20}$/gm.test(documentNumber.value)) {
+        showError(
+            "El número de identificación no debe tener letras y tiene estar en un rango de 8 a 20 dígitos"
+        );
+    }
+}
+
+function verifyAge(age) {
+    if (age.value >= 15 && age.value <= 29) {
+        return "El paciente pertenece al grupo poblacional juvenil.";
+    } else if (age.value >= 30 && age.value <= 59) {
+        return "El paciente pertenece al grupo poblacional adulto.";
+    } else {
+        return "El paciente pertenece al grupo poblacional de adultos mayores.";
+    }
 }
 
 function convertDocumentType(option) {
@@ -118,6 +129,7 @@ function showError(msg) {
     divError.innerHTML = `<span class="alert alert-danger text-center">${msg}</span>`;
 
     result.appendChild(divError);
+    showResult();
 
     setTimeout(() => {
         divError.remove();
@@ -141,11 +153,17 @@ function showResult(name, documentType, documentNumber, calories, msg) {
     }, 10);
 
     result.innerHTML = `
-        <div class="card-body d-flex flex-column justify-content-center align-items-center h-100">
+        <div class="card-body d-flex flex-column justify-content-center align-items-center h-100" id="calculo">
             <h5 class="card-title h2">Resultados</h5>
             <div class="mb-3 w-100">
                 <p>
-                    El paciente ${name.value} identificado con ${documentType} NO. ${documentNumber.value}, requiere un total de ${calories} kcal para el sostenimiento de su TBM
+                    El paciente ${
+                        name.value
+                    } identificado con ${documentType} NO. ${
+        documentNumber.value
+    }, requiere un total de ${Math.round(
+        calories
+    )} kcal para el sostenimiento de su TBM.
                 </p>
                 <br> <br>
                 ${msg}
