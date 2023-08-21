@@ -1,6 +1,5 @@
 const form = document.getElementById("calculator-form");
 const result = document.getElementById("result");
-
 form.addEventListener("submit", (event) => {
     event.preventDefault();
     calculateCalories();
@@ -33,6 +32,8 @@ function calculateCalories() {
         return null;
     }
 
+    regexValidations(name, documentNumber);
+
     // Constant values needed to do the math
     const bmr = {
         age:    5,
@@ -63,7 +64,7 @@ function calculateCalories() {
     height.value = null;
     activity.value = null;
     gender.value = null;
-
+    
     return calories;
 }
 
@@ -77,21 +78,29 @@ function allFieldsFilled(fields) {
             return false;
         }
     }
-
     return true;
 }
 
+function regexValidations(name, documentNumber) {
+    if (!/([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/gim.test(name.value)) {
+        showError("El campo Nombre solo debe tener letras");
+        return null;
+    }
+    if (!/^[0-9]{8,20}$/gm.test(documentNumber.value)) {
+        showError(
+            "El número de identificación no debe tener letras y tiene que estar en un rango de 8 a 20 dígitos"
+        );
+        return null;
+    }
+}
+
 function verifyAge(age) {
-    if (age.value >= 15 && !Number.isNaN(age)) {
-        if (age.value >= 15 && age.value <= 29) {
-            return "El paciente pertenece al grupo poblacional juvenil.";
-        } else if (age.value >= 30 && age.value <= 59) {
-            return "El paciente pertenece al grupo poblacional adulto.";
-        } else {
-            return "El paciente pertenece al grupo poblacional de adultos mayores.";
-        }
+    if (age.value >= 15 && age.value <= 29) {
+        return "El paciente pertenece al grupo poblacional juvenil.";
+    } else if (age.value >= 30 && age.value <= 59) {
+        return "El paciente pertenece al grupo poblacional adulto.";
     } else {
-        showError("La edad ingresada no es permitida");
+        return "El paciente pertenece al grupo poblacional de adultos mayores.";
     }
 }
 
@@ -102,7 +111,6 @@ function convertDocumentType(option) {
         2: "Tarjeta de identidad",
         3: "Pasaporte",
     };
-
     return type[option];
 }
 
@@ -111,15 +119,12 @@ function showError(msg) {
     if (calculo) {
         calculo.remove();
     }
-
     const divError = document.createElement("div");
     divError.className =
         "d-flex justify-content-center align-items-center h-100";
     divError.innerHTML = `<span class="alert alert-danger text-center">${msg}</span>`;
-
     result.appendChild(divError);
     showResult();
-
     setTimeout(() => {
         divError.remove();
         fadeResult();
@@ -130,7 +135,6 @@ function showError(msg) {
 function showResult(name, documentType, documentNumber, calories, msg) {
     result.style.top = "100vh";
     result.style.display = "block";
-
     let distance = 100;
     let subs = 0.3;
     let id = setInterval(() => {
@@ -146,7 +150,13 @@ function showResult(name, documentType, documentNumber, calories, msg) {
             <h5 class="card-title h2">Resultados</h5>
             <div class="mb-3 w-100">
                 <p>
-                    El paciente ${name.value} identificado con ${documentType} NO. ${documentNumber.value}, requiere un total de ${Math.round(calories)} kcal para el sostenimiento de su TBM
+                    El paciente ${
+                        name.value
+                    } identificado con ${documentType} NO. ${
+        documentNumber.value
+    }, requiere un total de ${Math.round(
+        calories
+    )} kcal para el sostenimiento de su TBM.
                 </p>
                 <br> <br>
                 ${msg}
@@ -157,7 +167,6 @@ function showResult(name, documentType, documentNumber, calories, msg) {
 
 function fadeResult() {
     let distance = 1;
-
     let id = setInterval(() => {
         distance *= 2;
         result.style.top = `${distance}vh`;
